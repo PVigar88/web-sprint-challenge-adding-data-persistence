@@ -3,9 +3,17 @@ exports.up = function (knex) {
     tbl.increments("task_id");
     tbl.string("task_description").notNullable();
     tbl.string("task_notes");
-    tbl.boolean("task_completed");
-    tbl.integer("project_id").references("projects.project_id").notNullable();
+    tbl.integer("task_completed").defaultTo(0);
+    tbl
+      .integer("project_id")
+      .unsigned()
+      .references("projects.project_id")
+      .notNullable()
+      .onDelete("CASCADE")
+      .onUpdate("CASCADE");
   });
 };
 
-exports.down = function (knex) {};
+exports.down = function (knex) {
+  return knex.schema.dropTableIfExists("tasks");
+};
