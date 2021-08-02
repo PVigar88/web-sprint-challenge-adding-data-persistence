@@ -14,7 +14,7 @@ const db = require("../../data/dbConfig");
 
 async function getTasks() {
   const tasks = await db("tasks as T")
-    .leftJoin("projects as P", "P.project_id", "T.task_id")
+    .leftJoin("projects as P", "P.project_id", "T.project_id")
     .select("T.*", "P.project_name", "P.project_description");
 
   const taskObject = tasks.map((task) => {
@@ -32,18 +32,17 @@ async function getTasks() {
 }
 
 async function addTask(task) {
-  const [task_id] = await db("task")
-    .leftJoin("projects as P", "P.project_id", "T.task_id")
+  const [task_id] = await db("tasks as T")
+    .leftJoin("projects as P", "P.project_id", "T.project_id")
+    .select("T.*", "P.project_id")
     .insert(task);
 
   return {
     task_id: task_id,
     task_description: task.task_description,
-    task_notes: task.task_notes,
-    task_completed: task.task_completed ? true : false,
+    task_notes: !task.task_notes ? null : task.task_notes,
+    task_completed: task.task_completed === 1 ? true : false,
     project_id: task.project_id,
-    project_name: task.project_name,
-    project_description: task.project_description,
   };
 }
 
