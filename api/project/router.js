@@ -13,8 +13,8 @@ const Projects = require("./model");
 
 const router = express.Router();
 
-router.get("/", (req, res, next) => {
-  Projects.getProjects()
+router.get("/", async (req, res, next) => {
+  await Projects.getProjects()
     .then((projects) => {
       res.status(200).json(projects);
     })

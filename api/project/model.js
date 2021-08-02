@@ -10,7 +10,17 @@
 const db = require("../../data/dbConfig");
 
 async function getProjects() {
-  return await db("projects");
+  const projects = await db("projects").select("*");
+
+  const projectsObject = projects.map((project) => {
+    return {
+      project_id: project.project_id,
+      project_name: project.project_name,
+      project_description: project.project_description,
+      project_completed: project.project_completed === 0 ? false : true,
+    };
+  });
+  return projectsObject;
 }
 
 async function addProject(project) {
@@ -20,7 +30,7 @@ async function addProject(project) {
     project_id: project_id,
     project_name: project.project_name,
     project_description: project.project_description,
-    project_completed: project.project_completed,
+    project_completed: project.project_completed === 1 ? true : false,
   };
 }
 

@@ -9,7 +9,7 @@
 const db = require("../../data/dbConfig");
 
 function getResource() {
-  return db("resources");
+  return db("resources").select("*");
 }
 
 async function addResource(resource) {

@@ -15,8 +15,8 @@ const Tasks = require("./model");
 
 const router = express.Router();
 
-router.get("/", (req, res, next) => {
-  Tasks.getTask()
+router.get("/", async (req, res, next) => {
+  await Tasks.getTasks()
     .then((tasks) => {
       res.status(200).json(tasks);
     })

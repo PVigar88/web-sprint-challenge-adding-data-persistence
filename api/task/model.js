@@ -18,7 +18,7 @@ async function getTasks() {
     .select("T.*", "P.project_name", "P.project_description");
 
   const taskObject = tasks.map((task) => {
-    const compiledTask = {
+    return {
       task_id: task.task_id,
       task_description: task.task_description,
       task_notes: task.task_notes,
@@ -27,7 +27,6 @@ async function getTasks() {
       project_name: task.project_name,
       project_description: task.project_description,
     };
-    return compiledTask;
   });
   return taskObject;
 }
